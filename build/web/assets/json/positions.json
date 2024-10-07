@@ -1,0 +1,9 @@
+[
+{"id": 1, "position": "Regional Director", "description": "Regional Director"},
+{"id": 2, "position": "Application Administrator", "description": "App Admin"},
+{"id": 3, "position": "Program Manager", "description": "Program Manager"},
+{"id": 4, "position": "Project Coordinator", "description": "Project Coordinator"},
+{"id": 5, "position": "Admin", "description": "Admin"},
+{"id": 5, "position": "Developer", "description": "Developer"},
+{"id": 5, "position": "Quality Assurance Analyst", "description": "Quality Assurance Analyst"}
+]
