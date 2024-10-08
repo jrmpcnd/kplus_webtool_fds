@@ -1,7 +1,7 @@
 import 'package:mfi_whitelist_admin_portal/ui/shared/sessionmanagement/getuserinfo/getuserinfo.dart';
 
 class MFIApiEndpoints {
-  static const String _url = 'https://dev-api-janus.fortress-asya.com:18021/api/public/v1';
+  static const String _url = 'https://dev-api-janus.fortress-asya.com:18023/api/public/v1';
   static String getURL() {
     return _url;
   }

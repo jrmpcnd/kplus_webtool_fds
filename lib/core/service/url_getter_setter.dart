@@ -3,7 +3,9 @@ class UrlGetter {
 
   // static const String _url = 'http://192.168.120.144:19017/api/public/v1';
   //static const String _url = 'http://127.0.0.1:19017/api/public/v1';
-  static const String _url = 'https://dev-api-janus.fortress-asya.com:18021/api/public/v1';
+  //static const String _url = 'https://dev-api-janus.fortress-asya.com:18021/api/public/v1';
+  static const String _url = 'https://dev-api-janus.fortress-asya.com:18023/api/public/v1';
+
   //https://dev-api-janus.fortress-asya.com:18021/
 
   static String getURL() {

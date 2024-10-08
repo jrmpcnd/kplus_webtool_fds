@@ -14,6 +14,7 @@ import '../../../shared/values/colors.dart';
 import '../../../shared/values/styles.dart';
 import '../../../shared/widget/buttons/button.dart';
 import '../../../shared/widget/containers/dialog.dart';
+import '../../../shared/widget/pagination/pagination_button.dart';
 import '../../../shared/widget/scrollable/scrollable_widget.dart';
 
 class PendingClientPerFile extends StatefulWidget {
@@ -858,7 +859,7 @@ class _PendingClientPerFileState extends State<PendingClientPerFile> {
             const SizedBox(height: 10),
 
             //PAGINATION BUTTON CODE
-            // PaginationControls(currentPage: displayPage, totalPages: totalPages, totalRecords: totalRecords, onPreviousPage: previousPage, onNextPage: nextPage, onPageSelected: _onPageSelected, title: 'Clients')
+            PaginationControls(currentPage: displayPage, totalPages: totalPages, totalRecords: totalRecords, onPreviousPage: previousPage, onNextPage: nextPage, title: 'Clients')
           ],
         ),
       ),
