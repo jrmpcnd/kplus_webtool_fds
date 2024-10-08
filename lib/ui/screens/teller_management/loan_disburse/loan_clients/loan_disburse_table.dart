@@ -313,7 +313,7 @@ class _LoanDisbursementTableState extends State<LoanDisbursementTable> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const HeaderBar(screenText: 'Loan Disburse Clients List'),
+            const HeaderBar(screenText: 'Loan Disburse Transaction History'),
             Container(
               padding: const EdgeInsets.fromLTRB(0, 5, 10, 0),
               decoration: const BoxDecoration(

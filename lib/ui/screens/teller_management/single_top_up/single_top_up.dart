@@ -11,6 +11,7 @@ import 'package:mfi_whitelist_admin_portal/ui/shared/values/colors.dart';
 import 'package:mfi_whitelist_admin_portal/ui/shared/values/styles.dart';
 import 'package:mfi_whitelist_admin_portal/ui/shared/widget/alert_dialog/alert_dialogs.dart';
 import 'package:mfi_whitelist_admin_portal/ui/shared/widget/buttons/button.dart';
+import 'package:mfi_whitelist_admin_portal/ui/shared/widget/containers/dialog.dart';
 import 'package:mfi_whitelist_admin_portal/ui/shared/widget/fields/simplified_widget.dart';
 import 'package:mfi_whitelist_admin_portal/ui/shared/widget/stepper/stepper_circle.dart';
 import 'package:provider/provider.dart';
@@ -244,6 +245,31 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
 
   ///BOOLEAN VALUES
 
+  /// VALIDATOR
+  String? _validateTopUpAmount(String? value) {
+    String topUpAmount = singleTopUpAmount.text.replaceAll(',', '');
+    double amount = double.tryParse(topUpAmount) ?? 0;
+
+    // If the field is empty, remove previous validation messages
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    if (amount < 100) {
+      return 'Amount is below the required minimum of 100';
+    } else if (amount > 50000) {
+      return 'Amount exceeds the allowed maximum of 50,000';
+    } else {
+      return null; // No validation message if the value is valid
+    }
+  }
+
+  void validateFieldUponProceed(String value) {
+    if (formKey.currentState!.validate()) {
+      _validateTopUpAmount(value);
+    }
+  }
+
   //FOR TEXT FORM FIELD VALIDATOR
   String? _validateField(String? value, {bool isMobileNumber = false}) {
     if (value == null || value.isEmpty) {
@@ -255,6 +281,17 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
       return '';
     }
     return null;
+  }
+
+  //DETERMINE MIN AND MAX VALUE
+  void determineMinMaxAmount(double amount) {
+    if (amount < 100) {
+      _showMinMaxAmountDialog(context, 'The entered amount is below the required minimum for a top-up.', 'Minimum Top-Up Amount Required');
+    } else if (amount > 50000) {
+      _showMinMaxAmountDialog(context, 'The entered amount exceeds the allowed maximum for a top-up.', 'Maximum Top-Up Limit Exceeded');
+    } else {
+      _showTopUpConfirmationDialog(context);
+    }
   }
 
   ///MAIN BUILDER
@@ -323,7 +360,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                     width: 5,
                   ),
                   Text(
-                    'E-Wallet Top Up',
+                    'E-Wallet Top-up',
                     style: TextStyle(color: AppColors.maroon2, fontSize: fontSize.clamp(25, 40), fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -351,7 +388,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                       height: 50,
                       child: MyButton.buttonWithLabel(
                         context,
-                        () => singleTopUpAmount.text.isNotEmpty ? _showTopUpConfirmationDialog(context) : null,
+                        () => singleTopUpAmount.text.isNotEmpty ? determineMinMaxAmount(double.parse(singleTopUpAmount.text.replaceAll(',', ''))) : null,
                         'PROCEED TOP UP',
                         Iconsax.wallet_add_1_copy,
                         singleTopUpAmount.text.isNotEmpty ? AppColors.maroon2 : Colors.grey,
@@ -371,7 +408,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                       height: 50,
                       child: MyButton.buttonWithLabel(
                         context,
-                        () => singleTopUpAmount.text.isNotEmpty ? _showTopUpConfirmationDialog(context) : null,
+                        () => singleTopUpAmount.text.isNotEmpty ? determineMinMaxAmount(double.parse(singleTopUpAmount.text.replaceAll(',', ''))) : null,
                         'PROCEED TOP UP',
                         Iconsax.wallet_add_1_copy,
                         singleTopUpAmount.text.isNotEmpty ? AppColors.maroon2 : Colors.grey,
@@ -389,7 +426,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                     child: CustomColoredButton.primaryButtonWithText(
                       context,
                       5,
-                      () => singleTopUpAmount.text.isNotEmpty ? _showTopUpConfirmationDialog(context) : null,
+                      () => singleTopUpAmount.text.isNotEmpty ? determineMinMaxAmount(double.parse(singleTopUpAmount.text.replaceAll(',', ''))) : null,
                       singleTopUpAmount.text.isNotEmpty ? AppColors.maroon2 : Colors.grey,
                       'PROCEED TOP UP',
                     ));
@@ -456,7 +493,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 30),
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -542,7 +579,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 3),
                     Wrap(
                       spacing: 20,
                       runSpacing: 10,
@@ -601,7 +638,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 10, 0, 30),
+                          margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -635,7 +672,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 7),
+                    // const SizedBox(height: 7),
                     Wrap(
                       spacing: 20,
                       runSpacing: 10,
@@ -677,7 +714,7 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
           ),
           Container(
             // color: Colors.amber,
-            margin: const EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 10),
             constraints: const BoxConstraints(maxWidth: 850),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -712,9 +749,10 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
                     return SizedBox(
                       width: 620,
                       child: buildCurrencyTextField(
+                        onChanged: validateFieldUponProceed,
                         controller: singleTopUpAmount,
                         hintText: '0.00', // Placeholder text
-                        validator: _validateField,
+                        validator: _validateTopUpAmount,
                         isEnabled: (accountNumberValue.text.isNotEmpty),
                       ),
                     );
@@ -847,97 +885,25 @@ class _SingleWalletTopUpState extends State<SingleWalletTopUp> {
             },
           ),
         );
-        // return Dialog(
-        //   backgroundColor: AppColors.bgColor,
-        //   shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(16.0),
-        //   ),
-        //   child: Stack(
-        //     clipBehavior: Clip.none,
-        //     alignment: Alignment.topCenter,
-        //     children: [
-        //       Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50), // Add padding to make space for the CircleAvatar
-        //         child: Container(
-        //           // color: Colors.blueGrey,
-        //           width: 500,
-        //           padding: const EdgeInsets.all(16.0),
-        //           child: Column(
-        //             mainAxisSize: MainAxisSize.min,
-        //             children: [
-        //               const Text(
-        //                 'Amount Top-up',
-        //                 style: TextStyles.dataTextStyle,
-        //               ),
-        //               const SizedBox(height: 8),
-        //               Text(
-        //                 formattedAmount(),
-        //                 style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-        //               ),
-        //               const SizedBox(height: 30),
-        //               Row(
-        //                 children: [
-        //                   const Text('Account Number'),
-        //                   const Spacer(),
-        //                   Text(
-        //                     singleTopUpAccountNumber.text,
-        //                     style: TextStyles.bold14Black,
-        //                   ),
-        //                 ],
-        //               ),
-        //               const Divider(),
-        //               const SizedBox(height: 16),
-        //               Row(
-        //                 children: [
-        //                   const Text('Account Name'),
-        //                   const Spacer(),
-        //                   Text(singleTopUpFullName.text, style: TextStyles.bold14Black),
-        //                 ],
-        //               ),
-        //               const Divider(),
-        //               const SizedBox(height: 24),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       Positioned(
-        //         bottom: 20,
-        //         child: SizedBox(
-        //           width: 300,
-        //           height: 40,
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.center,
-        //             children: [
-        //               CustomColoredButton.secondaryButtonWithText(context, 5, () => Navigator.pop(context), AppColors.bgColor, 'Cancel'),
-        //               CustomColoredButton.primaryButtonWithText(context, 5, () => singleTopUpAmount.text == '0.00' || singleTopUpAmount.text == '0' || singleTopUpAmount.text == '0.0' || singleTopUpAmount.text == '0.' ? null : _onTopUpPressed(), singleTopUpAmount.text == '0.00' || singleTopUpAmount.text == '0' || singleTopUpAmount.text == '0.0' || singleTopUpAmount.text == '0.' ? Colors.grey : AppColors.infoColor, 'Confirm'),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       // CircleAvatar positioned to float outside the dialog
-        //       const Positioned(
-        //         top: -30, // Adjust the position to have half of it outside
-        //         child: CircleStepper(
-        //           borderColor: AppColors.infoColor,
-        //           secondBorderColor: AppColors.infoColor,
-        //           stepperColor: AppColors.infoColor,
-        //           padding: 10,
-        //           shadowColor: AppColors.infoColor,
-        //           child: CircleAvatar(
-        //             backgroundColor: AppColors.infoColor,
-        //             radius: 30,
-        //             child: Icon(
-        //               Icons.info,
-        //               color: Colors.white,
-        //               size: 35,
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // );
       },
+    );
+  }
+
+  ///MIN AND MAX AMOUNT
+  void _showMinMaxAmountDialog(BuildContext context, String message, String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialogWidget(
+        titleText: title,
+        contentText: message,
+        titleColor: AppColors.infoColor,
+        iconColor: AppColors.whiteColor,
+        iconData: Iconsax.info_circle_copy,
+        positiveButtonText: 'Adjust Top-Up',
+        positiveOnPressed: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }

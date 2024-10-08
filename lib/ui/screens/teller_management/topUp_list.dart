@@ -55,7 +55,7 @@ class _TopUpClientsState extends State<TopUpClients> {
   void initState() {
     super.initState();
     fetchRows();
-    fetchDistinct();
+    // fetchDistinct();
     _initializeData();
     updateUrl('/Access/Top_Up/Top_Up_Clients');
   }
@@ -222,44 +222,44 @@ class _TopUpClientsState extends State<TopUpClients> {
   /// NEW API
   Map<String, String> fileBatchUploadMap = {};
 
-  Future<void> fetchDistinct() async {
-    try {
-      final token = getToken();
-      final response = await http.get(
-        Uri.parse('${UrlGetter.getURL()}/topup/test/get/all/clients?page=1&perPage=10&batch_topup_file_id=1&batch_topup_status=&topup_reference_id='),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        debugPrint('Distinct ${responseData.toString()}');
-
-        if (responseData['distinctData'] != null) {
-          fileBatchUploadMap.clear(); // Clear the previous mapping if any
-          for (var item in responseData['distinctData']) {
-            if (item['fileName'] != null && item['batchUploadId'] != null) {
-              fileBatchUploadMap[item['fileName']] = item['batchUploadId'].toString();
-            }
-          }
-        }
-
-        // Print the map contents
-        debugPrint('File Batch Upload Map: $fileBatchUploadMap');
-
-        setState(() {
-          displayFileName = fileBatchUploadMap.keys.toList(); // Update the display file names
-        });
-      } else {
-        debugPrint('FAILED');
-        debugPrint(response.body);
-        throw Exception('Failed to load menu data: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('Exception occurred: $e');
-    }
-  }
+  // Future<void> fetchDistinct() async {
+  //   try {
+  //     final token = getToken();
+  //     final response = await http.get(
+  //       Uri.parse('${UrlGetter.getURL()}/topup/test/get/all/clients?page=1&perPage=10&batch_topup_file_id=1&batch_topup_status=&topup_reference_id='),
+  //       headers: {
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       final responseData = json.decode(response.body);
+  //       debugPrint('Distinct ${responseData.toString()}');
+  //
+  //       if (responseData['distinctData'] != null) {
+  //         fileBatchUploadMap.clear(); // Clear the previous mapping if any
+  //         for (var item in responseData['distinctData']) {
+  //           if (item['fileName'] != null && item['batchUploadId'] != null) {
+  //             fileBatchUploadMap[item['fileName']] = item['batchUploadId'].toString();
+  //           }
+  //         }
+  //       }
+  //
+  //       // Print the map contents
+  //       debugPrint('File Batch Upload Map: $fileBatchUploadMap');
+  //
+  //       setState(() {
+  //         displayFileName = fileBatchUploadMap.keys.toList(); // Update the display file names
+  //       });
+  //     } else {
+  //       debugPrint('FAILED');
+  //       debugPrint(response.body);
+  //       throw Exception('Failed to load menu data: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Exception occurred: $e');
+  //   }
+  // }
 
   void fetchData(int page, int perPage, String? batchTopupFileId) async {
     print('Call API Pg: $page');
@@ -423,7 +423,7 @@ class _TopUpClientsState extends State<TopUpClients> {
   void _initializeData() {
     fetchData(currentPage, int.parse(_selectedItem), '');
     currentPage = 0;
-    fetchDistinct();
+    // fetchDistinct();
   }
 
   Future<void> fetchRows() async {
@@ -522,7 +522,7 @@ class _TopUpClientsState extends State<TopUpClients> {
 
     return [
       buildDataColumn('File Name'),
-      buildDataColumn('CID', onTap: () => _sortData(0, !_sortAscending)),
+      buildDataColumn('CID'),
       buildDataColumn('Client Full Name'),
       buildDataColumn('Account Number'),
       buildDataColumn('Amount'),
@@ -591,11 +591,11 @@ class _TopUpClientsState extends State<TopUpClients> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const HeaderBar(screenText: ''),
-            Text(
-              'Top Up Clients List',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            const HeaderBar(screenText: 'Top-up Transaction History'),
+            // Text(
+            //   'Top Up Clients List',
+            //   style: TextStyle(fontWeight: FontWeight.bold),
+            // ),
             Container(
               padding: const EdgeInsets.fromLTRB(0, 5, 10, 0),
               decoration: const BoxDecoration(

@@ -99,6 +99,7 @@ TextFormField buildCurrencyTextField({
   required TextEditingController controller,
   required String hintText,
   required FormFieldValidator<String> validator,
+  Function(String)? onChanged,
   bool isEnabled = false,
 }) {
   return TextFormField(
@@ -111,6 +112,7 @@ TextFormField buildCurrencyTextField({
     cursorColor: AppColors.maroon2,
     cursorHeight: 25,
     validator: validator,
+    onChanged: onChanged,
     keyboardType: const TextInputType.numberWithOptions(decimal: true),
     inputFormatters: [CurrencyFormatter()],
     decoration: InputDecoration(

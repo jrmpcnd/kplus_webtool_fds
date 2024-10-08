@@ -2,7 +2,6 @@ import 'dart:js';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mfi_whitelist_admin_portal/core/api/login_logout/login.dart';
 import 'package:mfi_whitelist_admin_portal/core/provider/timer_service_provider.dart';
 import 'package:mfi_whitelist_admin_portal/main.dart';
 import 'package:mfi_whitelist_admin_portal/ui/shared/utils/utils_responsive.dart';
@@ -31,17 +30,18 @@ class _LoginScreenState extends State<LoginScreen> {
   TimerProvider timerProvider = TimerProvider();
 
   _clearToken() async {
-    if (getToken() != 'null' && getToken() != '' && getToken() != null) {
-      await logout(getToken(), true);
+    final token = getToken();
+    if (token != 'null' && token != '' && token != null) {
+      await logout(token, true); // Log out if there is a valid token
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _clearToken();
     context.callMethod('eval', ['window.history.replaceState(null, "", "/Login");']);
     stopTimer();
+    _clearToken();
   }
 
   void stopTimer() async {
@@ -55,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    LoginAPI loginAPI = LoginAPI();
     return PopScope(
       canPop: false,
       child: Material(
@@ -182,12 +181,10 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 20),
           PassWord(controller: passcontroller),
           const SizedBox(height: 35),
-          // const SignIn(),
           SizedBox(
             height: 35,
             width: 400,
             child: ElevatedButton(
-              //pag nag succes yung code ang need na basahin ay yung username and password get nalang
               onPressed: () {
                 login(context, usercontroller, passcontroller);
               },

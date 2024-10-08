@@ -11,7 +11,7 @@ class LoanDisbursementAPIs {
   //FETCH ALL UPLOADED FILES
   static Future<List<UploadedLoanDisburseFile>> fetchAllUploadedDisburseFiles() async {
     final response = await http.get(
-      Uri.parse('${UrlGetter.getURL()}/loan/test/get/all/uploaded'),
+      Uri.parse('${UrlGetter.getURL()}/loan/test/get/all/uploaded?perPage=10000'),
       headers: {'Authorization': 'Bearer $token'},
     );
 

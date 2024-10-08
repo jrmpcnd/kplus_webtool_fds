@@ -110,7 +110,7 @@ class _PendingTopUpClientsState extends State<PendingTopUpClients> {
                   children: [
                     Text('Uploaded Top Up Files', style: TextStyles.heavyBold16Black),
                     Text(
-                      'Manage files for e-wallet top.',
+                      'Manage files for E-wallet top-up.',
                       style: TextStyles.dataTextStyle,
                       maxLines: 2,
                       softWrap: true,

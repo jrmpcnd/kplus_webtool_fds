@@ -75,14 +75,14 @@ import '../../service/url_getter_setter.dart';
 //   }
 // }
 
-
 //added | OCT 03, 2024
 class FetchClientListAPIs {
   static final token = getToken();
   //FETCH ALL UPLOADED FILES
   static Future<List<AllTopUpUploadedFilesData>> fetchAllUploadedFiles() async {
+    final url = Uri.parse('${UrlGetter.getURL()}/topup/test/get/all/uploaded?perPage=1000');
     final response = await http.get(
-      Uri.parse('${UrlGetter.getURL()}/topup/test/get/all/uploaded'),
+      Uri.parse('${UrlGetter.getURL()}/topup/test/get/all/uploaded?perPage=10000'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -95,6 +95,7 @@ class FetchClientListAPIs {
         }
 
         final List<dynamic> jsonData = jsonResponse['data'];
+
         return jsonData.map((json) => AllTopUpUploadedFilesData.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load files');

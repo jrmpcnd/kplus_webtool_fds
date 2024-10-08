@@ -2,6 +2,7 @@ import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
 import 'AuthService.dart';
 
 class AuthGuard extends StatefulWidget {
@@ -55,33 +56,32 @@ class _AuthGuardState extends State<AuthGuard> {
   }
 }
 
-//
-// class AuthCheck extends StatelessWidget {
-//   final WidgetBuilder builder;
-//
-//   const AuthCheck({Key? key, required this.builder}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder<bool>(
-//       future: AuthService().isAuthenticated(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const Center(child: CircularProgressIndicator());
-//         }
-//         if (snapshot.hasData && snapshot.data == true) {
-//           // If the user is authenticated, redirect to the home page
-//           WidgetsBinding.instance.addPostFrameCallback((_) {
-//             Navigator.pushReplacementNamed(context, path!);
-//           });
-//           return const Center(child: CircularProgressIndicator());
-//         } else {
-//           return builder(context);
-//         }
-//       },
-//     );
-//   }
-// }
+class AuthCheck extends StatelessWidget {
+  final WidgetBuilder builder;
+
+  const AuthCheck({Key? key, required this.builder}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: AuthService().isAuthenticated(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasData && snapshot.data == true) {
+          // If the user is authenticated, redirect to the home page
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacementNamed(context, path!);
+          });
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return builder(context);
+        }
+      },
+    );
+  }
+}
 
 //
 //
@@ -112,32 +112,39 @@ class _AuthGuardState extends State<AuthGuard> {
 //   }
 // }
 
-class AuthCheck extends StatelessWidget {
-  final WidgetBuilder builder;
-
-  const AuthCheck({Key? key, required this.builder}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: localStorageEmpty(context),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          return builder(context);
-        }
-      },
-    );
-  }
-
-  Future<void> localStorageEmpty(BuildContext context) async {
-    bool authenticated = await AuthService().isAuthenticated();
-    if (authenticated) {
-      // If the user is authenticated, redirect them to the home or dashboard route
-      Navigator.pushReplacementNamed(context, '/Home'); // Redirect to the desired route
-    } else {
-      // Allow the user to continue to the login page
-    }
-  }
-}
+// class AuthCheck extends StatelessWidget {
+//   final WidgetBuilder builder;
+//
+//   const AuthCheck({Key? key, required this.builder}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder<void>(
+//       future: localStorageEmpty(context),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return const Center(child: CircularProgressIndicator());
+//         } else {
+//           return builder(context);
+//         }
+//       },
+//     );
+//   }
+//
+//   Future<void> localStorageEmpty(BuildContext context) async {
+//     bool authenticated = await AuthService().isAuthenticated();
+//     if (authenticated) {
+//       Navigator.pushReplacementNamed(context, path!);
+//     }
+//   }
+//
+//   // Future<void> localStorageEmpty(BuildContext context) async {
+//   //   bool authenticated = await AuthService().isAuthenticated();
+//   //   if (authenticated) {
+//   //     // If the user is authenticated, redirect them to the home or dashboard route
+//   //     Navigator.pushReplacementNamed(context, '/Home'); // Redirect to the desired route
+//   //   } else {
+//   //     // Allow the user to continue to the login page
+//   //   }
+//   // }
+// }
